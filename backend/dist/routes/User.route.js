@@ -22,9 +22,18 @@ var UserRoutes = /** @class */ (function () {
                 return response.json({ error: error });
             });
         });
+        this.routes.get("/by", function (request, response) {
+            console.log(request.query);
+            if (request.query.email) {
+                User_model_1.UserModel.findOne({ email: request.query.email })
+                    .then(function (user) {
+                    response.status(200);
+                    return response.json(user);
+                });
+            }
+        });
         this.routes.get("/:_id", function (request, response, next) {
-            var isValidId = mongoose_1.isValidObjectId(request.params._id);
-            if (!isValidId) {
+            if (!mongoose_1.isValidObjectId(request.params._id)) {
                 response.status(404);
                 return response.json({ message: "User not found!" });
             }

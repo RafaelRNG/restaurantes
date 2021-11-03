@@ -1,4 +1,4 @@
-import { Schema, model, Document } from "mongoose";
+import { Schema, model, Model, Document } from "mongoose";
 import { environment } from "../utils/environment";
 import { hash } from "bcrypt";
 

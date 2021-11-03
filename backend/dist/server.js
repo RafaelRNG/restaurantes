@@ -20,15 +20,20 @@ var Server = /** @class */ (function () {
     }
     Server.prototype.applyMiddlewares = function () {
         this.server.use(express_1.default.json());
-    };
-    Server.prototype.initRoutes = function () {
         this.server.use(function (request, response, next) {
-            //@ts-ignore
-            request.httpVersion = request.header("accept-version");
+            request.httpVersion = request.headers['accept-version'];
             next();
         });
+    };
+    Server.prototype.initRoutes = function () {
         this.server.use("/users", this.version({
-            "1.0.0": User_route_1.default
+            "1.0.0": User_route_1.default,
+            "2.0.0": function (request, response, next) {
+                return response.json({
+                    message: "for future releases!",
+                    instructions: "Please add a header in the request of type 'accept-version' with value '1.0.0', to get access to previous version while working on version 2.0.0!"
+                });
+            }
         }));
         this.server.use("/restaurants", Restaurant_route_1.default);
         this.server.use("/reviews", Review_route_1.default);

@@ -12,7 +12,7 @@ class UserRoutes {
       this.routes = Router();
       this.initUserRoutes();
    }
-   
+
    initUserRoutes(): void {
       this.routes.get("", (request: Request, response: Response) => {
          UserModel.find().select(["name", "email"])
@@ -28,8 +28,7 @@ class UserRoutes {
 
       this.routes.get("/:_id", (request: Request, response: Response, next: NextFunction) => {
 
-         const isValidId = isValidObjectId(request.params._id);
-         if (!isValidId) {
+         if (!isValidObjectId(request.params._id)) {
             response.status(404);
             return response.json({ message: "User not found!" });
          }
