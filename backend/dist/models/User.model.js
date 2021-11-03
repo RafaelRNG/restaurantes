@@ -45,7 +45,4 @@ userSchema.pre("save", function (next) {
             .catch(next);
     }
 });
-userSchema.statics.findByEmail = function (email) {
-    return this.findOne({ email: email });
-};
 exports.UserModel = mongoose_1.model("User", userSchema);

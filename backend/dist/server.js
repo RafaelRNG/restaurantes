@@ -20,12 +20,13 @@ var Server = /** @class */ (function () {
     }
     Server.prototype.applyMiddlewares = function () {
         this.server.use(express_1.default.json());
+        this.server.use(express_1.default.query({}));
+    };
+    Server.prototype.initRoutes = function () {
         this.server.use(function (request, response, next) {
             request.httpVersion = request.headers['accept-version'];
             next();
         });
-    };
-    Server.prototype.initRoutes = function () {
         this.server.use("/users", this.version({
             "1.0.0": User_route_1.default,
             "2.0.0": function (request, response, next) {

@@ -14,6 +14,21 @@ class UserRoutes {
    }
 
    initUserRoutes(): void {
+
+      this.routes.get("/findbyemail", (request, response) => {
+         UserModel.findOne({ email: <string>request.query.email })
+            .select(["name", "email", "_id"])
+            .then(user => {
+               if (user) {
+                  response.status(200)
+                  return response.json(user);
+               } else {
+                  response.status(400);
+                  return response.json({ message: "User not found!" });
+               }
+            })
+      })
+
       this.routes.get("", (request: Request, response: Response) => {
          UserModel.find().select(["name", "email"])
             .then(users => {

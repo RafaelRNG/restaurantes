@@ -11,6 +11,20 @@ var UserRoutes = /** @class */ (function () {
         this.initUserRoutes();
     }
     UserRoutes.prototype.initUserRoutes = function () {
+        this.routes.get("/findbyemail", function (request, response) {
+            User_model_1.UserModel.findOne({ email: request.query.email })
+                .select(["name", "email", "_id"])
+                .then(function (user) {
+                if (user) {
+                    response.status(200);
+                    return response.json(user);
+                }
+                else {
+                    response.status(400);
+                    return response.json({ message: "User not found!" });
+                }
+            });
+        });
         this.routes.get("", function (request, response) {
             User_model_1.UserModel.find().select(["name", "email"])
                 .then(function (users) {
@@ -21,16 +35,6 @@ var UserRoutes = /** @class */ (function () {
                 response.status(400);
                 return response.json({ error: error });
             });
-        });
-        this.routes.get("/by", function (request, response) {
-            console.log(request.query);
-            if (request.query.email) {
-                User_model_1.UserModel.findOne({ email: request.query.email })
-                    .then(function (user) {
-                    response.status(200);
-                    return response.json(user);
-                });
-            }
         });
         this.routes.get("/:_id", function (request, response, next) {
             if (!mongoose_1.isValidObjectId(request.params._id)) {

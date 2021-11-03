@@ -21,13 +21,16 @@ class Server {
 
    private applyMiddlewares(): void {
       this.server.use(express.json());
+      this.server.use(express.query({}))
+
+   }
+
+   private initRoutes(): void {
       this.server.use((request: Request, response: Response, next: NextFunction) => {
          request.httpVersion = <any>request.headers['accept-version']
          next();
       })
-   }
 
-   private initRoutes(): void {
       this.server.use("/users", this.version({
          "1.0.0": UserRoute,
          "2.0.0": (request, response, next) => {
