@@ -10,6 +10,7 @@ var environment_1 = require("./utils/environment");
 var Restaurant_route_1 = __importDefault(require("./routes/Restaurant.route"));
 var Review_route_1 = __importDefault(require("./routes/Review.route"));
 var express_routes_versioning_1 = __importDefault(require("express-routes-versioning"));
+var Auth_handler_1 = require("./security/Auth.handler");
 var Server = /** @class */ (function () {
     function Server() {
         this.server = express_1.default();
@@ -38,6 +39,7 @@ var Server = /** @class */ (function () {
         }));
         this.server.use("/restaurants", Restaurant_route_1.default);
         this.server.use("/reviews", Review_route_1.default);
+        this.server.post("/authenticate", Auth_handler_1.authenticate);
     };
     Server.prototype.initializeDatabase = function () {
         mongoose_1.default.Promise = global.Promise;

@@ -11,7 +11,13 @@ var ReviewRoutes = /** @class */ (function () {
     }
     ReviewRoutes.prototype.InitReviewRoute = function () {
         this.routes.get("/:_restaurantId", function (request, response) {
+            var pageSize = 4;
+            var page = parseInt(request.query._page || 1);
+            page = page > 0 ? page : 1;
+            var skip = (page - 1) * pageSize;
             Review_model_1.ReviewModel.find({ restaurant: request.params._restaurantId })
+                .skip(skip)
+                .limit(pageSize)
                 .populate("restaurant", "name")
                 .populate("user", "name")
                 .then(function (reviews) {

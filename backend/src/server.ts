@@ -5,6 +5,7 @@ import { environment } from "./utils/environment";
 import RestaurantRoutes from "./routes/Restaurant.route";
 import ReviewRoute from "./routes/Review.route";
 import versionRoutes from "express-routes-versioning";
+import { authenticate } from "./security/Auth.handler";
 
 class Server {
 
@@ -42,6 +43,7 @@ class Server {
       }));
       this.server.use("/restaurants", RestaurantRoutes);
       this.server.use("/reviews", ReviewRoute);
+      this.server.post("/authenticate", authenticate);
    }
 
    private initializeDatabase(): Promise<typeof mongoose> {

@@ -13,7 +13,7 @@ var UserRoutes = /** @class */ (function () {
     UserRoutes.prototype.initUserRoutes = function () {
         this.routes.get("/findbyemail", function (request, response) {
             User_model_1.UserModel.findOne({ email: request.query.email })
-                .select(["name", "email", "_id"])
+                .select(["name", "email", "_id", "gender", "cpf"])
                 .then(function (user) {
                 if (user) {
                     response.status(200);
@@ -26,7 +26,7 @@ var UserRoutes = /** @class */ (function () {
             });
         });
         this.routes.get("", function (request, response) {
-            User_model_1.UserModel.find().select(["name", "email"])
+            User_model_1.UserModel.find().select(["name", "email", "gender", "cpf", "_id"])
                 .then(function (users) {
                 response.status(200);
                 return response.json(users);

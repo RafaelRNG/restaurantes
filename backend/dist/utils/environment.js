@@ -10,5 +10,8 @@ exports.environment = {
     },
     model: {
         emailValidation: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    },
+    security: {
+        apiSecret: process.env.API_SECRET || "rng-api-secret"
     }
 };

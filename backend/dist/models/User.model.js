@@ -31,6 +31,9 @@ var userSchema = new mongoose_1.Schema({
         required: false
     }
 });
+userSchema.methods.matches = function (password) {
+    return bcrypt_1.compareSync(password, this.password);
+};
 userSchema.pre("save", function (next) {
     var user = this;
     if (!user.isModified("password")) {

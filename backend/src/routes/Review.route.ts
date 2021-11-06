@@ -16,7 +16,16 @@ class ReviewRoutes {
 
       this.routes.get("/:_restaurantId", (request: Request, response: Response) => {
 
+         let pageSize = 4;
+
+         let page = parseInt(<any>request.query._page || 1);
+         page = page > 0 ? page : 1
+
+         const skip = (page - 1) * pageSize
+
          ReviewModel.find({ restaurant: request.params._restaurantId })
+            .skip(skip)
+            .limit(pageSize)
             .populate("restaurant", "name")
             .populate("user", "name")
             .then(reviews => {

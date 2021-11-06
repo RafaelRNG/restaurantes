@@ -1,6 +1,6 @@
 import { Schema, model, Model, Document } from "mongoose";
 import { environment } from "../utils/environment";
-import { hash } from "bcrypt";
+import { hash, compareSync } from "bcrypt";
 
 export interface UserDocument extends Document {
    name: string;
@@ -8,6 +8,7 @@ export interface UserDocument extends Document {
    password: string;
    gender: ["Male", "Female"];
    cpf: string;
+   matches(password: string): boolean;
 }
 
 const userSchema = new Schema({
@@ -37,6 +38,11 @@ const userSchema = new Schema({
       required: false
    }
 });
+
+userSchema.methods.matches = function (password: string): boolean {
+   return compareSync(password, this.password)
+
+}
 
 userSchema.pre("save", function (next) {
    const user: UserDocument = this;

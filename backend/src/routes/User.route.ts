@@ -15,9 +15,9 @@ class UserRoutes {
 
    initUserRoutes(): void {
 
-      this.routes.get("/findbyemail", (request, response) => {
+      this.routes.get("/findbyemail", (request: Request, response: Response) => {
          UserModel.findOne({ email: <string>request.query.email })
-            .select(["name", "email", "_id"])
+            .select(["name", "email", "_id", "gender", "cpf"])
             .then(user => {
                if (user) {
                   response.status(200)
@@ -30,7 +30,7 @@ class UserRoutes {
       })
 
       this.routes.get("", (request: Request, response: Response) => {
-         UserModel.find().select(["name", "email"])
+         UserModel.find().select(["name", "email", "gender", "cpf", "_id"])
             .then(users => {
                response.status(200);
                return response.json(users);
