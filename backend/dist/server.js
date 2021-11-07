@@ -11,6 +11,7 @@ var Restaurant_route_1 = __importDefault(require("./routes/Restaurant.route"));
 var Review_route_1 = __importDefault(require("./routes/Review.route"));
 var express_routes_versioning_1 = __importDefault(require("express-routes-versioning"));
 var Auth_handler_1 = require("./security/Auth.handler");
+var Token_parser_1 = require("./security/Token.parser");
 var Server = /** @class */ (function () {
     function Server() {
         this.server = express_1.default();
@@ -22,6 +23,7 @@ var Server = /** @class */ (function () {
     Server.prototype.applyMiddlewares = function () {
         this.server.use(express_1.default.json());
         this.server.use(express_1.default.query({}));
+        this.server.use(Token_parser_1.tokenParser);
     };
     Server.prototype.initRoutes = function () {
         this.server.use(function (request, response, next) {

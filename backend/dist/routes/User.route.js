@@ -5,28 +5,29 @@ var User_model_1 = require("../models/User.model");
 var mongoose_1 = require("mongoose");
 var User_validation_1 = require("../validations/User.validation");
 var bcrypt_1 = require("bcrypt");
+var Authz_handle_1 = require("../security/Authz.handle");
 var UserRoutes = /** @class */ (function () {
     function UserRoutes() {
         this.routes = express_1.Router();
         this.initUserRoutes();
     }
     UserRoutes.prototype.initUserRoutes = function () {
-        this.routes.get("/findbyemail", function (request, response) {
-            User_model_1.UserModel.findOne({ email: request.query.email })
-                .select(["name", "email", "_id", "gender", "cpf"])
-                .then(function (user) {
-                if (user) {
-                    response.status(200);
-                    return response.json(user);
-                }
-                else {
-                    response.status(400);
-                    return response.json({ message: "User not found!" });
-                }
-            });
-        });
+        this.routes.get("/findbyemail", [Authz_handle_1.authorize("admin"), function (request, response) {
+                User_model_1.UserModel.findOne({ email: request.query.email })
+                    .select(["name", "email", "_id", "gender", "cpf", "profiles"])
+                    .then(function (user) {
+                    if (user) {
+                        response.status(200);
+                        return response.json(user);
+                    }
+                    else {
+                        response.status(400);
+                        return response.json({ message: "User not found!" });
+                    }
+                });
+            }]);
         this.routes.get("", function (request, response) {
-            User_model_1.UserModel.find().select(["name", "email", "gender", "cpf", "_id"])
+            User_model_1.UserModel.find().select(["name", "email", "gender", "cpf", "_id", "profiles"])
                 .then(function (users) {
                 response.status(200);
                 return response.json(users);

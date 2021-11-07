@@ -15,7 +15,7 @@ export const authenticate: RequestHandler = (request, response, next) => {
             }, environment.security.apiSecret)
 
             response.status(200);
-            response.json({ name: user.name, email: user.email, accessToken: token });
+            response.json({ name: user.name, email: user.email, accessToken: "Bearer " + token });
          } else {
             response.status(401);
             return response.json({ message: "User not exists or not authorized" });

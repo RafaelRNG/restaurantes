@@ -17,7 +17,7 @@ exports.authenticate = function (request, response, next) {
                 iss: "rng-api",
             }, environment_1.environment.security.apiSecret);
             response.status(200);
-            response.json({ name: user.name, email: user.email, accessToken: token });
+            response.json({ name: user.name, email: user.email, accessToken: "Bearer " + token });
         }
         else {
             response.status(401);

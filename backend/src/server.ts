@@ -6,6 +6,7 @@ import RestaurantRoutes from "./routes/Restaurant.route";
 import ReviewRoute from "./routes/Review.route";
 import versionRoutes from "express-routes-versioning";
 import { authenticate } from "./security/Auth.handler";
+import { tokenParser } from "./security/Token.parser";
 
 class Server {
 
@@ -22,7 +23,8 @@ class Server {
 
    private applyMiddlewares(): void {
       this.server.use(express.json());
-      this.server.use(express.query({}))
+      this.server.use(express.query({}));
+      this.server.use(tokenParser);
 
    }
 

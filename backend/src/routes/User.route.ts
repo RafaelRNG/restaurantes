@@ -3,6 +3,7 @@ import { UserModel, UserDocument } from "../models/User.model";
 import { isValidObjectId } from "mongoose";
 import { UserValidation } from "../validations/User.validation";
 import { hashSync } from "bcrypt";
+import { authorize } from "../security/Authz.handle";
 
 class UserRoutes {
 
@@ -15,9 +16,9 @@ class UserRoutes {
 
    initUserRoutes(): void {
 
-      this.routes.get("/findbyemail", (request: Request, response: Response) => {
+      this.routes.get("/findbyemail", [authorize("admin"), (request: Request, response: Response) => {
          UserModel.findOne({ email: <string>request.query.email })
-            .select(["name", "email", "_id", "gender", "cpf"])
+            .select(["name", "email", "_id", "gender", "cpf", "profiles"])
             .then(user => {
                if (user) {
                   response.status(200)
@@ -27,10 +28,10 @@ class UserRoutes {
                   return response.json({ message: "User not found!" });
                }
             })
-      })
+      }])
 
       this.routes.get("", (request: Request, response: Response) => {
-         UserModel.find().select(["name", "email", "gender", "cpf", "_id"])
+         UserModel.find().select(["name", "email", "gender", "cpf", "_id", "profiles"])
             .then(users => {
                response.status(200);
                return response.json(users);
